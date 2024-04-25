@@ -1,6 +1,6 @@
 <?php
 
-namespace modules\Transaction\Providers;
+namespace Transaction\Providers;
 
 use Database\Seeders\DatabaseSeeder;
 use Illuminate\Support\ServiceProvider;
