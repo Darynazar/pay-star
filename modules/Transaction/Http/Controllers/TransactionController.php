@@ -3,7 +3,6 @@
 namespace Transaction\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use Transaction\Http\Requests\TransactionRequest;
 use Transaction\Models\Transaction;
 use Transaction\Services\TransactionService;
@@ -20,6 +19,7 @@ class TransactionController extends Controller
     public function index()
     {
         $transactions = $this->transactionService->getAllTransactions();
+
         return response()->json($transactions);
     }
 
@@ -31,18 +31,21 @@ class TransactionController extends Controller
     public function store(TransactionRequest $request)
     {
         $transaction = $this->transactionService->createTransaction($request->validated());
+
         return response()->json($transaction, 201);
     }
 
     public function update(TransactionRequest $request, Transaction $transaction)
     {
         $updatedTransaction = $this->transactionService->updateTransaction($transaction, $request->validated());
+
         return response()->json($updatedTransaction);
     }
 
     public function destroy(Transaction $transaction)
     {
         $this->transactionService->deleteTransaction($transaction);
+
         return response()->json(null, 204);
     }
 }

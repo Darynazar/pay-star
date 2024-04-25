@@ -19,6 +19,7 @@ class TransactionService
     public function updateTransaction(Transaction $transaction, array $data)
     {
         $transaction->update($data);
+
         return $transaction;
     }
 

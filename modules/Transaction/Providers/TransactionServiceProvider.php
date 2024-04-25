@@ -2,9 +2,7 @@
 
 namespace Transaction\Providers;
 
-use Database\Seeders\DatabaseSeeder;
 use Illuminate\Support\ServiceProvider;
-
 
 class TransactionServiceProvider extends ServiceProvider
 {
