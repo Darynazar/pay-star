@@ -28,6 +28,7 @@ return new class extends Migration
             $table->string('national_code')->nullable();
             $table->string('card_number')->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
