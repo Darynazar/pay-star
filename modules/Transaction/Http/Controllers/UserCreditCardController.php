@@ -3,8 +3,9 @@
 namespace Transaction\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\UserCreditCardRequest;
 use Illuminate\Http\JsonResponse;
+use Transaction\Http\Requests\UserCreditCardRequest;
+use Transaction\Http\Resources\UserCreditCardResource;
 use Transaction\Services\UserCreditCardService;
 
 class UserCreditCardController extends Controller
@@ -20,7 +21,7 @@ class UserCreditCardController extends Controller
     {
         $userCreditCards = $this->userCreditCardService->getAllUserCreditCards();
 
-        return response()->json($userCreditCards);
+        return UserCreditCardResource::collection($userCreditCards);
     }
 
     public function store(UserCreditCardRequest $request): JsonResponse
