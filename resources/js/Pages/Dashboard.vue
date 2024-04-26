@@ -1,28 +1,16 @@
 <script setup>
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { Head } from '@inertiajs/vue3';
-
-import InputError from '@/Components/InputError.vue';
-import InputLabel from '@/Components/InputLabel.vue';
-import PrimaryButton from '@/Components/PrimaryButton.vue';
-import TextInput from '@/Components/TextInput.vue';
 import { Link, useForm, usePage } from '@inertiajs/vue3';
 
-defineProps({
-    mustVerifyEmail: {
-        type: Boolean,
-    },
-    status: {
-        type: String,
+const props = defineProps({
+    userCreditCards: {
+        type: Array,
+        required: true
     },
 });
 
 const user = usePage().props.auth.user;
-
-const form = useForm({
-    name: user.name,
-    email: user.email,
-});
 </script>
 
 <template>
@@ -36,74 +24,25 @@ const form = useForm({
         <div class="py-12">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                    <div class="p-6 text-gray-900">You're logged in!</div>
+                    <div class="p-6 text-gray-900">Your Credit card</div>
+                    <table class="min-w-full divide-y divide-gray-200">
+                        <thead class="bg-gray-50">
+                        <tr>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Card Number</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Expiration Date</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">CVV</th>
+                        </tr>
+                        </thead>
+                        <tbody class="bg-white divide-y divide-gray-200">
+                        <tr v-for="creditCard in userCreditCards" :key="creditCard.id">
+                            <td class="px-6 py-4 whitespace-nowrap">{{ creditCard.card_number }}</td>
+                            <td class="px-6 py-4 whitespace-nowrap">{{ creditCard.expiration_date }}</td>
+                            <td class="px-6 py-4 whitespace-nowrap">{{ creditCard.cvv }}</td>
+                        </tr>
+                        </tbody>
+                    </table>
 
-                    <form @submit.prevent="form.patch(route('profile.update'))" class="p-10 mt-6 space-y-6">
-                        <div>
-                            <InputLabel for="name" value="Name" />
 
-                            <TextInput
-                                id="name"
-                                type="text"
-                                class="mt-1 block w-full"
-                                v-model="form.name"
-                                required
-                                autofocus
-                                autocomplete="name"
-                            />
-
-                            <InputError class="mt-2" :message="form.errors.name" />
-                        </div>
-
-                        <div>
-                            <InputLabel for="email" value="Email" />
-
-                            <TextInput
-                                id="email"
-                                type="email"
-                                class="mt-1 block w-full"
-                                v-model="form.email"
-                                required
-                                autocomplete="username"
-                            />
-
-                            <InputError class="mt-2" :message="form.errors.email" />
-                        </div>
-
-                        <div v-if="mustVerifyEmail && user.email_verified_at === null">
-                            <p class="text-sm mt-2 text-gray-800">
-                                Your email address is unverified.
-                                <Link
-                                    :href="route('verification.send')"
-                                    method="post"
-                                    as="button"
-                                    class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                                >
-                                    Click here to re-send the verification email.
-                                </Link>
-                            </p>
-
-                            <div
-                                v-show="status === 'verification-link-sent'"
-                                class="mt-2 font-medium text-sm text-green-600"
-                            >
-                                A new verification link has been sent to your email address.
-                            </div>
-                        </div>
-
-                        <div class="flex items-center gap-4">
-                            <PrimaryButton :disabled="form.processing">Save</PrimaryButton>
-
-                            <Transition
-                                enter-active-class="transition ease-in-out"
-                                enter-from-class="opacity-0"
-                                leave-active-class="transition ease-in-out"
-                                leave-to-class="opacity-0"
-                            >
-                                <p v-if="form.recentlySuccessful" class="text-sm text-gray-600">Saved.</p>
-                            </Transition>
-                        </div>
-                    </form>
                 </div>
             </div>
         </div>

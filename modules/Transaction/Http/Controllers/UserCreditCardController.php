@@ -3,7 +3,8 @@
 namespace Transaction\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
+use Inertia\Inertia;
 use Transaction\Http\Requests\UserCreditCardRequest;
 use Transaction\Http\Resources\UserCreditCardResource;
 use Transaction\Services\UserCreditCardService;
@@ -17,38 +18,47 @@ class UserCreditCardController extends Controller
         $this->userCreditCardService = $userCreditCardService;
     }
 
-    public function index(): JsonResponse
+    public function index(Request $request)
     {
         $userCreditCards = $this->userCreditCardService->getAllUserCreditCards();
 
-        return UserCreditCardResource::collection($userCreditCards);
+        return Inertia::render('UserCreditCards/Index', [
+            'userCreditCards' => UserCreditCardResource::collection($userCreditCards),
+        ]);
     }
 
-    public function store(UserCreditCardRequest $request): JsonResponse
+    public function create()
+    {
+        return Inertia::render('UserCreditCards/Create');
+    }
+
+    public function store(UserCreditCardRequest $request)
     {
         $userCreditCard = $this->userCreditCardService->createUserCreditCard($request->validated());
 
-        return response()->json($userCreditCard, 201);
+        return redirect()->route('user-credit-cards.index');
     }
 
-    public function show(int $id): JsonResponse
+    public function edit($id)
     {
         $userCreditCard = $this->userCreditCardService->getUserCreditCard($id);
 
-        return response()->json($userCreditCard);
+        return Inertia::render('UserCreditCards/Edit', [
+            'userCreditCard' => $userCreditCard,
+        ]);
     }
 
-    public function update(UserCreditCardRequest $request, int $id): JsonResponse
+    public function update(UserCreditCardRequest $request, $id)
     {
         $userCreditCard = $this->userCreditCardService->updateUserCreditCard($id, $request->validated());
 
-        return response()->json($userCreditCard);
+        return redirect()->route('user-credit-cards.index');
     }
 
-    public function destroy(int $id): JsonResponse
+    public function destroy($id)
     {
         $this->userCreditCardService->deleteUserCreditCard($id);
 
-        return response()->json(['message' => 'User credit card deleted successfully']);
+        return redirect()->route('user-credit-cards.index');
     }
 }
