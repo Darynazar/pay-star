@@ -13,16 +13,12 @@ return new class extends Migration
     {
         Schema::create('user_credit_cards', function (Blueprint $table) {
             $table->id();
-            $table->id();
             $table->unsignedBigInteger('user_id');
             $table->string('card_number');
             $table->string('expiration_date');
             $table->string('cvv');
             $table->timestamps();
             $table->softDeletes();
-
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-
         });
     }
 
