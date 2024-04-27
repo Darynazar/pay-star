@@ -2,6 +2,7 @@
 
 namespace Transaction\Services;
 
+use Illuminate\Support\Facades\Auth;
 use Transaction\Models\Transaction;
 
 class TransactionService
@@ -13,6 +14,8 @@ class TransactionService
 
     public function createTransaction(array $data)
     {
+        $data['user_id'] = Auth::user()->id;
+
         return Transaction::create($data);
     }
 

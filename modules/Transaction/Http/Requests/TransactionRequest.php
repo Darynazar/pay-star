@@ -14,11 +14,11 @@ class TransactionRequest extends FormRequest
     public function rules()
     {
         return [
-            'user_id' => 'required|exists:users,id',
+            'user_id' => 'nullable|exists:users,id',
             'amount' => 'required|integer',
             'order_id' => 'required|integer',
-            'callback' => 'required|string',
-            'sign' => 'required|string',
+            'callback' => 'nullable|string',
+            'sign' => 'nullable|string',
             'name' => 'nullable|string',
             'phone' => 'nullable|string',
             'mail' => 'nullable|email',
@@ -27,7 +27,7 @@ class TransactionRequest extends FormRequest
             'callback_method' => 'nullable|integer',
             'wallet_hashid' => 'nullable|string',
             'national_code' => 'nullable|string',
-            'card_number' => 'nullable|string',
+            'card_number' => 'required|string|exists:user_credit_cards,card_number',
         ];
     }
 }
