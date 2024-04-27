@@ -30,7 +30,9 @@ class TransactionController extends Controller
 
     public function store(TransactionRequest $request)
     {
-        $transaction = $this->transactionService->createTransaction($request->validated());
+        $this->transactionService->createTransaction($request->validated());
+
+        return redirect()->route('dashboard');
 
         return response()->json($transaction, 201);
     }
