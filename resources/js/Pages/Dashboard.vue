@@ -8,6 +8,10 @@ import { Head } from '@inertiajs/vue3';
 import { Link, useForm, usePage } from '@inertiajs/vue3';
 import {ref} from "vue";
 
+const successMessage = ref('');
+const dismissSuccessMessage = () => {
+    successMessage.value = '';
+};
 const props = defineProps({
     userCreditCards: {
         type: Array,
@@ -27,10 +31,21 @@ const form = useForm({
 const updatePassword = () => {
     form.post(route('transactions.store'), {
         preserveScroll: true,
-        onSuccess: () => form.reset(),
+        // onSuccess: () => form.reset(),
+        onSuccess: () => {
+            console.log('ok?')
+            form.reset()
+            Swal.fire({
+                icon: 'success',
+                title: 'پرداخت با موفقیت انجام شد',
+                showConfirmButton: false,
+                timer: 2000
+            });
+        },
         onError: () => {
             if (form.errors.order_id) {
                 form.reset('order_id', 'order_id');
+                successMessage.value = response.success;
                 order_id.value.focus();
             }
             if (form.errors.amount) {
@@ -55,6 +70,16 @@ const user = usePage().props.auth.user;
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                     <div class="p-6 text-gray-900">Your Credit card</div>
+                    <div v-if="successMessage" class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative" role="alert">
+                        <strong class="font-bold">Success!</strong>
+                        <span class="block sm:inline">{{ successMessage }}</span>
+                        <button @click="dismissSuccessMessage" class="absolute top-0 bottom-0 right-0 px-4 py-3">
+                            <svg class="fill-current h-6 w-6 text-green-500" role="button" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                                <title>Close</title>
+                                <path d="M14.348 14.849a1 1 0 01-1.414 0L10 11.414l-2.93 2.93a1 1 0 01-1.415-1.415l2.93-2.93-2.93-2.93a1 1 0 011.415-1.415l2.93 2.93 2.93-2.93a1 1 0 011.415 1.415l-2.93 2.93 2.93 2.93a1 1 0 010 1.415z" />
+                            </svg>
+                        </button>
+                    </div>
                     <table class="min-w-full divide-y divide-gray-200">
                         <thead class="bg-gray-50">
                         <tr>

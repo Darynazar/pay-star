@@ -23,7 +23,7 @@ class TransactionService
         ])->post('https://core.paystar.ir/api/pardakht/create', $data);
 
         $data['user_id'] = Auth::user()->id;
-        $data['sign'] = 'sksjk';
+        $data['sign'] = 'this is sign';
 
         Transaction::create($data);
 

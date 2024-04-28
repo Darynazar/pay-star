@@ -15,7 +15,7 @@ class TransactionRequest extends FormRequest
     {
         return [
             'user_id' => 'nullable|exists:users,id',
-            'amount' => 'required|integer',
+            'amount' => 'required|integer|min:5000',
             'order_id' => 'required|integer',
             'callback' => 'nullable|string',
             'sign' => 'nullable|string',
