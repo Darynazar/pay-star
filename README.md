@@ -17,3 +17,16 @@ php artisan key:generate
 ````
 php artisan migrate:fresh --seed
 ````
+
+### Run Feature test
+```
+./vendor/bin/pest
+```
+### Login with this user
+```
+email: admin@admin.com
+```
+```
+password: UnicornsAreSweet
+```
+
