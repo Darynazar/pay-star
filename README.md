@@ -1,6 +1,5 @@
 # pay-star
 
-### you need to setup your local database in .env for both docker or local setups
 ## For Local Setup
 
 ````
@@ -17,7 +16,4 @@ php artisan key:generate
 ````
 ````
 php artisan migrate:fresh --seed
-````
-````
-php artisan jwt:secret
 ````
