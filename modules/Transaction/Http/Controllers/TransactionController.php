@@ -32,9 +32,11 @@ class TransactionController extends Controller
     {
         $this->transactionService->createTransaction($request->validated());
 
-        return redirect()->back(201)->with('success', 'created was successfully');
+        return redirect()->route('dashboard')
+            ->with('success', 'TRansaction created successfully.');
+        //        return redirect()->back(201)->with('success', 'created was successfully');
 
-        //        return response()->json($transaction, 201);
+        //                return response()->json($transaction, 201);
     }
 
     public function update(TransactionRequest $request, Transaction $transaction)
